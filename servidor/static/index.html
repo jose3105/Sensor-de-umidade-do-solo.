@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f9f9f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)">
+  <title>Minha Planta</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%230ca30c' d='M12 2C8 7 5 10.5 5 14a7 7 0 0 0 14 0c0-3.5-3-7-7-12z'/></svg>">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="pagina">
+    <header class="topo">
+      <div class="marca">
+        <span class="marca-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 22V11"/><path d="M12 11C12 6 8 4 3 4c0 5 3 8 9 7z"/><path d="M12 14c0-4 3-6 8-6 0 4-3 6.5-8 6z"/></svg>
+        </span>
+        <div>
+          <h1>Minha Planta</h1>
+          <p class="subtitulo">Monitor de umidade do solo</p>
+        </div>
+      </div>
+      <div class="topo-acoes">
+        <span id="conexao" class="pilula" data-status="carregando">
+          <span class="pilula-ponto" aria-hidden="true"></span>
+          <span id="conexao-texto">Conectando…</span>
+        </span>
+        <button id="tema" class="botao-icone" type="button" aria-label="Alternar tema claro/escuro">
+          <svg class="icone-sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="icone-lua" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Estado atual -->
+      <section class="cartao destaque" aria-labelledby="titulo-agora">
+        <h2 id="titulo-agora" class="rotulo-secao">Agora</h2>
+        <div class="destaque-corpo">
+          <div class="medidor" id="medidor" data-estado="vazio" role="img" aria-label="Umidade do solo: sem dados">
+            <svg viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="medidor-trilha" cx="100" cy="100" r="80"/>
+              <circle class="medidor-valor" id="medidor-valor" cx="100" cy="100" r="80"/>
+              <g id="medidor-marcas" class="medidor-marcas"></g>
+            </svg>
+            <div class="medidor-centro">
+              <span class="medidor-numero"><span id="valor-umidade">--</span><span class="medidor-unidade">%</span></span>
+              <span class="medidor-legenda">umidade</span>
+            </div>
+          </div>
+
+          <div class="estado">
+            <div class="estado-cabecalho">
+              <span class="estado-icone" id="estado-icone" aria-hidden="true"></span>
+              <p class="estado-titulo" id="estado-titulo" aria-live="polite">Aguardando leitura…</p>
+            </div>
+            <p class="estado-descricao" id="estado-descricao">Assim que o sensor enviar dados, o estado da planta aparece aqui.</p>
+
+            <div class="escala" aria-hidden="true">
+              <div class="escala-barra">
+                <span class="escala-faixa faixa-seco"></span>
+                <span class="escala-faixa faixa-atencao"></span>
+                <span class="escala-faixa faixa-umido"></span>
+                <span class="escala-marcador" id="escala-marcador"></span>
+              </div>
+              <div class="escala-rotulos">
+                <span>Seco</span><span>Atenção</span><span>Úmido</span>
+              </div>
+            </div>
+
+            <dl class="detalhes">
+              <div><dt>Atualizado</dt><dd id="atualizado">—</dd></div>
+              <div><dt>Leitura bruta (A0)</dt><dd id="valor-raw">—</dd></div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resumo do período -->
+      <section aria-labelledby="titulo-resumo">
+        <div class="linha-titulo">
+          <h2 id="titulo-resumo" class="rotulo-secao">Resumo <span id="resumo-periodo">das últimas 24 h</span></h2>
+        </div>
+        <div class="indicadores">
+          <div class="cartao indicador">
+            <span class="indicador-rotulo">Média</span>
+            <span class="indicador-valor" id="stat-media">--</span>
+          </div>
+          <div class="cartao indicador">
+            <span class="indicador-rotulo">Mínima</span>
+            <span class="indicador-valor" id="stat-minimo">--</span>
+          </div>
+          <div class="cartao indicador">
+            <span class="indicador-rotulo">Máxima</span>
+            <span class="indicador-valor" id="stat-maximo">--</span>
+          </div>
+          <div class="cartao indicador">
+            <span class="indicador-rotulo">Tempo com solo seco</span>
+            <span class="indicador-valor" id="stat-seco">--</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Histórico -->
+      <section class="cartao grafico-cartao" aria-labelledby="titulo-historico">
+        <div class="linha-titulo">
+          <div>
+            <h2 id="titulo-historico" class="titulo-cartao">Histórico de umidade</h2>
+            <p class="texto-secundario">Média por intervalo · faixas indicam os limites de rega</p>
+          </div>
+          <div class="segmentado" role="group" aria-label="Período do histórico">
+            <button type="button" data-horas="1">1 h</button>
+            <button type="button" data-horas="6">6 h</button>
+            <button type="button" data-horas="24" aria-pressed="true">24 h</button>
+            <button type="button" data-horas="168">7 dias</button>
+          </div>
+        </div>
+
+        <div class="grafico-area">
+          <canvas id="grafico" role="img" aria-label="Gráfico de linha da umidade do solo ao longo do tempo"></canvas>
+          <p class="grafico-vazio" id="grafico-vazio" hidden>Ainda não há leituras neste período.</p>
+        </div>
+
+        <ul class="legenda-zonas">
+          <li><span class="chave chave-linha"></span>Umidade do solo</li>
+          <li><span class="chave chave-seco"></span><span>Seco (&lt; <span data-limite="seco">30</span>%)</span></li>
+          <li><span class="chave chave-umido"></span><span>Úmido (≥ <span data-limite="umido">60</span>%)</span></li>
+        </ul>
+
+        <details class="tabela-dados">
+          <summary>Ver dados em tabela</summary>
+          <div class="tabela-rolagem">
+            <table>
+              <thead><tr><th scope="col">Horário</th><th scope="col">Média</th><th scope="col">Mín.</th><th scope="col">Máx.</th></tr></thead>
+              <tbody id="tabela-corpo"></tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <footer class="rodape">
+      Projeto IoT · Arduino Uno + sensor de umidade do solo · <span id="modo">—</span>
+    </footer>
+  </div>
+
+  <script src="vendor/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "author": "Projeto IoT - Sensor de umidade do solo",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-arduino-uno",
+      "id": "uno",
+      "top": 150,
+      "left": 0,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "sensor",
+      "top": 380,
+      "left": 330,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_verde",
+      "top": 10,
+      "left": 90,
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_amarelo",
+      "top": 10,
+      "left": 140,
+      "attrs": {
+        "color": "yellow"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_vermelho",
+      "top": 10,
+      "left": 190,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 90,
+      "left": 70,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r2",
+      "top": 90,
+      "left": 120,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": 90,
+      "left": 170,
+      "rotate": 90,
+      "attrs": {
+        "value": "220"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "sensor:VCC",
+      "uno:7",
+      "red",
+      [
+        "v20",
+        "h-120"
+      ]
+    ],
+    [
+      "sensor:GND",
+      "uno:GND.2",
+      "black",
+      [
+        "v30",
+        "h-190"
+      ]
+    ],
+    [
+      "sensor:SIG",
+      "uno:A0",
+      "orange",
+      [
+        "v40",
+        "h-160"
+      ]
+    ],
+    [
+      "uno:2",
+      "r1:2",
+      "green",
+      [
+        "v-20"
+      ]
+    ],
+    [
+      "r1:1",
+      "led_verde:A",
+      "green",
+      []
+    ],
+    [
+      "uno:3",
+      "r2:2",
+      "gold",
+      [
+        "v-30"
+      ]
+    ],
+    [
+      "r2:1",
+      "led_amarelo:A",
+      "gold",
+      []
+    ],
+    [
+      "uno:4",
+      "r3:2",
+      "red",
+      [
+        "v-40"
+      ]
+    ],
+    [
+      "r3:1",
+      "led_vermelho:A",
+      "red",
+      []
+    ],
+    [
+      "led_verde:C",
+      "uno:GND.1",
+      "black",
+      []
+    ],
+    [
+      "led_amarelo:C",
+      "uno:GND.1",
+      "black",
+      []
+    ],
+    [
+      "led_vermelho:C",
+      "uno:GND.1",
+      "black",
+      []
+    ]
+  ],
+  "dependencies": {}
+}

@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Banco de dados local (gerado ao rodar o servidor)
+*.db
+*.db-journal
+
+# Editores / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Arduino / PlatformIO
+build/
+.pio/
